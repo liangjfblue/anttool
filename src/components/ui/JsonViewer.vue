@@ -28,7 +28,10 @@
     </div>
 
     <!-- JSON内容 -->
-    <div class="flex-1 overflow-auto bg-white dark:bg-gray-900 min-h-0">
+    <div
+      class="flex-1 overflow-auto bg-white dark:bg-gray-900 min-h-0"
+      @scroll="onScroll"
+    >
       <div v-if="jsonData" class="flex min-h-full">
         <!-- 行号 -->
         <div
@@ -73,6 +76,10 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
+const emit = defineEmits<{
+  scroll: [scrollTop: number, scrollHeight: number, clientHeight: number]
+}>()
 
 const jsonData = ref<any>(null)
 const showLineNumbers = ref(true)
@@ -148,6 +155,12 @@ const togglePath = (path: string) => {
     newPaths.add(path)
   }
   expandedPaths.value = newPaths
+}
+
+// 滚动事件处理
+const onScroll = (event: Event) => {
+  const target = event.target as HTMLElement
+  emit('scroll', target.scrollTop, target.scrollHeight, target.clientHeight)
 }
 </script>
 

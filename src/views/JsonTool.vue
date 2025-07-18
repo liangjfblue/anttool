@@ -25,7 +25,7 @@
         </Button>
         <Button
           @click="toggleSyncScroll"
-          :variant="syncScroll ? 'default' : 'outline'"
+          :variant="syncScroll ? 'primary' : 'outline'"
           size="sm"
           class="flex items-center gap-1"
         >

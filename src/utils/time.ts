@@ -45,7 +45,7 @@ export function getCurrentTime(): TimeConversion {
 /**
  * 时区转换
  */
-export function convertTimezone(dateString: string, fromTimezone: string, toTimezone: string): string {
+export function convertTimezone(dateString: string, _fromTimezone: string, toTimezone: string): string {
   try {
     const date = new Date(dateString)
     if (isNaN(date.getTime())) {

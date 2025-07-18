@@ -286,7 +286,7 @@ import Input from '@/components/ui/Input.vue'
 import Button from '@/components/ui/Button.vue'
 import {
   generateMd5,
-  generateFileMd5,
+  generateFileMd5 as generateFileMd5Util,
   validateMd5,
   compareMd5 as compareMd5Hash,
   generateHash,
@@ -317,7 +317,6 @@ const isProcessing = ref(false)
 // MD5验证
 const verifyHash1 = ref('')
 const verifyHash2 = ref('')
-const compareResult = ref<boolean | null>(null)
 
 // 实时对比结果
 const realtimeCompareResult = computed(() => {
@@ -388,7 +387,7 @@ const generateFileMd5 = async () => {
   
   try {
     isProcessing.value = true
-    fileMd5.value = await generateFileMd5(selectedFile.value)
+    fileMd5.value = await generateFileMd5Util(selectedFile.value)
   } catch (error) {
     console.error('文件MD5生成失败:', error)
   } finally {

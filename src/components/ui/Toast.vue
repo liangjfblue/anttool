@@ -68,7 +68,7 @@ const props = withDefaults(defineProps<ToastProps>(), {
 })
 
 const visible = ref(false)
-let timer: NodeJS.Timeout | null = null
+let timer: number | null = null
 
 // 计算样式类
 const toastClasses = computed(() => {

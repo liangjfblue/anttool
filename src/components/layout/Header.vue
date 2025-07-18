@@ -12,7 +12,7 @@
             </div>
             <div class="hidden md:block ml-4">
               <p class="text-sm text-gray-500 dark:text-gray-400">
-                开发者工具集合
+                牛马工具集合
               </p>
             </div>
           </router-link>

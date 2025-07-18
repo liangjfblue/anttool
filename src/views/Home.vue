@@ -1,34 +1,29 @@
 <template>
-  <div class="space-y-12">
-    <!-- 欢迎区域 -->
-    <div class="text-center">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white">
-        AntTool
-      </h1>
-    </div>
-
-    <!-- 工具卡片网格 -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <Card
-        v-for="tool in tools"
-        :key="tool.id"
-        class="hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer border-0 shadow-lg"
-        @click="$router.push(tool.path)"
-      >
-        <div class="p-8">
-          <div class="flex items-center mb-6">
-            <div class="p-4 bg-primary-100 dark:bg-primary-900 rounded-xl">
-              <component :is="tool.icon" class="h-8 w-8 text-primary-600 dark:text-primary-400" />
+  <div class="min-h-[calc(100vh-12rem)] flex items-center justify-center py-12">
+    <div class="w-full max-w-7xl mx-auto px-4">
+      <!-- 工具卡片网格 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <Card
+          v-for="tool in tools"
+          :key="tool.id"
+          class="hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-pointer border-0 shadow-lg"
+          @click="$router.push(tool.path)"
+        >
+          <div class="p-8">
+            <div class="flex items-center mb-6">
+              <div class="p-4 bg-primary-100 dark:bg-primary-900 rounded-xl">
+                <component :is="tool.icon" class="h-8 w-8 text-primary-600 dark:text-primary-400" />
+              </div>
+              <h3 class="ml-6 text-xl font-bold text-gray-900 dark:text-white">
+                {{ tool.name }}
+              </h3>
             </div>
-            <h3 class="ml-6 text-xl font-bold text-gray-900 dark:text-white">
-              {{ tool.name }}
-            </h3>
+            <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+              {{ tool.description }}
+            </p>
           </div>
-          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-            {{ tool.description }}
-          </p>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   </div>
 </template>

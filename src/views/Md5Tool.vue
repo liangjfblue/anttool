@@ -173,18 +173,17 @@
             />
           </div>
 
-          <Button @click="compareMd5" :disabled="!verifyHash1.trim() || !verifyHash2.trim()">
-            对比MD5
-          </Button>
-
-          <!-- 验证结果 -->
-          <div v-if="compareResult !== null" class="p-4 rounded-md" :class="compareResult ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'">
+          <!-- 实时验证结果 -->
+          <div v-if="realtimeCompareResult !== null" class="p-4 rounded-md" :class="realtimeCompareResult ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'">
             <div class="flex">
-              <CheckCircleIcon v-if="compareResult" class="h-5 w-5 text-green-400" />
+              <CheckCircleIcon v-if="realtimeCompareResult" class="h-5 w-5 text-green-400" />
               <XCircleIcon v-else class="h-5 w-5 text-red-400" />
               <div class="ml-3">
-                <p class="text-sm font-medium" :class="compareResult ? 'text-green-800 dark:text-green-200' : 'text-red-800 dark:text-red-200'">
-                  {{ compareResult ? 'MD5哈希值相同' : 'MD5哈希值不同' }}
+                <p class="text-sm font-medium" :class="realtimeCompareResult ? 'text-green-800 dark:text-green-200' : 'text-red-800 dark:text-red-200'">
+                  {{ realtimeCompareResult ? 'MD5哈希值相同 ✓' : 'MD5哈希值不同 ✗' }}
+                </p>
+                <p class="text-xs mt-1" :class="realtimeCompareResult ? 'text-green-600 dark:text-green-300' : 'text-red-600 dark:text-red-300'">
+                  实时对比结果
                 </p>
               </div>
             </div>
@@ -280,19 +279,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { DocumentIcon, CheckCircleIcon, XCircleIcon } from '@heroicons/vue/24/outline'
 import Card from '@/components/ui/Card.vue'
 import Input from '@/components/ui/Input.vue'
 import Button from '@/components/ui/Button.vue'
-import { 
-  generateMd5, 
-  generateFileMd5, 
-  validateMd5, 
-  compareMd5, 
-  generateHash, 
+import {
+  generateMd5,
+  generateFileMd5,
+  validateMd5,
+  compareMd5 as compareMd5Hash,
+  generateHash,
   batchGenerateMd5,
-  getSupportedHashAlgorithms 
+  getSupportedHashAlgorithms
 } from '@/utils/md5'
 
 // 选项卡
@@ -319,6 +318,19 @@ const isProcessing = ref(false)
 const verifyHash1 = ref('')
 const verifyHash2 = ref('')
 const compareResult = ref<boolean | null>(null)
+
+// 实时对比结果
+const realtimeCompareResult = computed(() => {
+  const hash1 = verifyHash1.value.trim()
+  const hash2 = verifyHash2.value.trim()
+
+  // 只有当两个输入框都有内容且格式都正确时才进行对比
+  if (hash1 && hash2 && validateMd5Format(hash1).valid && validateMd5Format(hash2).valid) {
+    return compareMd5Hash(hash1, hash2)
+  }
+
+  return null
+})
 
 // 批量处理
 const batchInput = ref('')
@@ -405,10 +417,7 @@ const copyFileResult = async () => {
   }
 }
 
-// 对比MD5
-const compareMd5 = () => {
-  compareResult.value = compareMd5(verifyHash1.value, verifyHash2.value)
-}
+
 
 // 验证MD5格式
 const validateMd5Format = (hash: string) => {

@@ -44,6 +44,18 @@ export interface DateDifference {
   seconds: number
 }
 
+export interface DateIntervalResult {
+  endDate: string
+  endDateFormatted: string
+  weekday: string
+  timestamp: number
+  timestampSeconds: number
+  totalDays: number
+  totalHours: number
+  totalMinutes: number
+  totalSeconds: number
+}
+
 // 通用响应类型
 export interface ApiResponse<T = any> {
   success: boolean

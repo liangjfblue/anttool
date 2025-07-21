@@ -188,3 +188,56 @@ export function validateDateString(dateString: string): { valid: boolean; error?
     }
   }
 }
+
+/**
+ * 根据开始日期和天数间隔计算结束日期详情
+ */
+export function calculateDateInterval(startDate: string, days: number): {
+  endDate: string
+  endDateFormatted: string
+  weekday: string
+  timestamp: number
+  timestampSeconds: number
+  totalDays: number
+  totalHours: number
+  totalMinutes: number
+  totalSeconds: number
+} {
+  try {
+    const start = new Date(startDate)
+    if (isNaN(start.getTime())) {
+      throw new Error('无效的开始日期格式')
+    }
+
+    if (!Number.isInteger(days)) {
+      throw new Error('天数必须为整数')
+    }
+
+    // 计算结束日期
+    const end = new Date(start)
+    end.setDate(start.getDate() + days)
+
+    // 获取星期几
+    const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+    const weekday = weekdays[end.getDay()]
+
+    // 计算各种时间单位
+    const totalHours = days * 24
+    const totalMinutes = totalHours * 60
+    const totalSeconds = totalMinutes * 60
+
+    return {
+      endDate: format(end, 'yyyy-MM-dd'),
+      endDateFormatted: format(end, 'yyyy-MM-dd HH:mm:ss'),
+      weekday,
+      timestamp: end.getTime(),
+      timestampSeconds: Math.floor(end.getTime() / 1000),
+      totalDays: Math.abs(days),
+      totalHours,
+      totalMinutes,
+      totalSeconds
+    }
+  } catch (error) {
+    throw new Error(`日期间隔计算失败: ${error instanceof Error ? error.message : '未知错误'}`)
+  }
+}
